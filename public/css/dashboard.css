@@ -1,0 +1,62 @@
+body {
+    background-color: #f4f6fb;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    padding: 12px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+}
+
+.navbar-brand, .nav-link {
+    color: white !important;
+}
+
+.sidebar {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    min-height: 85vh;
+    position: sticky;
+    top: 20px;
+}
+
+.sidebar .nav-link {
+    color: #555 !important;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white !important;
+}
+
+.welcome-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+}
+
+.stat-card {
+    border: none !important;
+    border-radius: 15px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important;
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.card {
+    border: none !important;
+    border-radius: 15px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important;
+}
