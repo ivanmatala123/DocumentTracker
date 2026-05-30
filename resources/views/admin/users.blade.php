@@ -1,144 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users Management — Document Tracker</title>
+    <title>Users — Document Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { font-family: 'Poppins', sans-serif; }
-        body { background-color: #fffbf0; margin: 0; padding: 0; }
-        .navbar { background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%) !important; padding: 12px 20px; box-shadow: 0 2px 15px rgba(244,130,0,0.35); }
-        .navbar-brand, .navbar .nav-link { color: #fff !important; font-weight: 600; }
-        .sidebar { background: white; border-radius: 20px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); min-height: 85vh; position: sticky; top: 20px; border-top: 4px solid #F48200; }
-        .sidebar .nav-link { color: #555 !important; border-radius: 10px; padding: 10px 15px; margin-bottom: 5px; font-weight: 500; }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%); color: white !important; }
-        .card { border: none !important; border-radius: 20px !important; box-shadow: 0 2px 15px rgba(0,0,0,0.08) !important; }
-        .btn-primary { background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%); border: none; font-weight: 600; }
-        .btn-primary:hover { background: linear-gradient(135deg, #d97200 0%, #d9a500 100%); }
+        * { font-family: 'Poppins', sans-serif; box-sizing: border-box; }
+        body { background: #f1f5f9; margin: 0; }
+        .sidebar { width: 240px; min-height: 100vh; background: #1e293b; position: fixed; left: 0; top: 0; z-index: 100; display: flex; flex-direction: column; }
+        .sidebar-brand { padding: 22px 20px; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; gap: 10px; }
+        .sidebar-brand .icon { width: 36px; height: 36px; background: linear-gradient(135deg, #F48200, #F6BB0A); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .sidebar-brand span { color: #fff; font-weight: 700; font-size: 0.95rem; }
+        .sidebar-nav { padding: 16px 12px; flex: 1; }
+        .nav-label { color: rgba(255,255,255,0.25); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0 10px; margin: 10px 0 6px; }
+        .sidebar-nav .nav-link { color: rgba(255,255,255,0.55); border-radius: 10px; padding: 10px 14px; margin-bottom: 2px; font-size: 0.87rem; font-weight: 500; display: flex; align-items: center; gap: 10px; transition: all 0.2s; text-decoration: none; }
+        .sidebar-nav .nav-link i { width: 17px; text-align: center; font-size: 0.88rem; }
+        .sidebar-nav .nav-link:hover { background: rgba(255,255,255,0.07); color: #fff; }
+        .sidebar-nav .nav-link.active { background: #F48200; color: #fff !important; }
+        .sidebar-footer { padding: 14px 12px; border-top: 1px solid rgba(255,255,255,0.07); }
+        .sidebar-footer form button { width: 100%; background: rgba(255,255,255,0.06); border: none; border-radius: 10px; padding: 10px 14px; color: rgba(255,255,255,0.55); font-size: 0.87rem; font-weight: 500; text-align: left; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; }
+        .sidebar-footer form button:hover { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .main { margin-left: 240px; min-height: 100vh; display: flex; flex-direction: column; }
+        .topbar { background: #fff; padding: 14px 28px; border-bottom: 1px solid #e8edf2; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; }
+        .topbar .page-title { font-weight: 700; font-size: 1.05rem; color: #1e293b; margin: 0; }
+        .topbar .breadcrumb-text { font-size: 0.78rem; color: #94a3b8; margin: 0; }
+        .user-chip { display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 50px; padding: 6px 14px 6px 6px; cursor: pointer; }
+        .user-avatar { width: 30px; height: 30px; background: linear-gradient(135deg, #F48200, #F6BB0A); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 0.78rem; }
+        .user-name { font-size: 0.82rem; font-weight: 600; color: #1e293b; }
+        .content { padding: 26px 28px; flex: 1; }
+        .table-card { background: #fff; border-radius: 14px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); overflow: hidden; }
+        .table-card-header { padding: 18px 22px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; }
+        .table-card-header h6 { font-weight: 700; color: #1e293b; margin: 0; font-size: 0.95rem; }
+        .table { margin: 0; }
+        .table thead th { background: #f8fafc; color: #64748b; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; border: none; padding: 12px 16px; }
+        .table tbody td { padding: 13px 16px; border-color: #f1f5f9; font-size: 0.87rem; color: #334155; vertical-align: middle; }
+        .table tbody tr:hover { background: #fafbfc; }
+        .modal-content { border: none; border-radius: 16px; overflow: hidden; }
+        .modal-header { border: none; padding: 18px 22px; }
+        .modal-body { padding: 22px; }
+        .modal-footer { border: none; padding: 14px 22px 18px; }
+        .form-label { font-size: 0.82rem; font-weight: 600; color: #475569; }
+        .form-control, .form-select { border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 0.88rem; padding: 10px 14px; }
+        .form-control:focus, .form-select:focus { border-color: #F48200; box-shadow: 0 0 0 3px rgba(244,130,0,0.1); }
+        .btn-orange { background: #F48200; color: #fff; border: none; border-radius: 8px; padding: 9px 18px; font-weight: 600; font-size: 0.87rem; }
+        .btn-orange:hover { background: #d97200; color: #fff; }
     </style>
 </head>
-
 <body>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <div class="icon">📄</div>
+            <span>DocTracker</span>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-label">Admin Panel</div>
+            <a href="{{ route('dashboard') }}" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="{{ route('admin.users') }}" class="nav-link active"><i class="fas fa-users"></i> Users</a>
+            <a href="{{ route('admin.documents') }}" class="nav-link"><i class="fas fa-file-alt"></i> Documents</a>
+            <a href="{{ route('admin.profile') }}" class="nav-link"><i class="fas fa-user-cog"></i> Profile</a>
+        </nav>
+        <div class="sidebar-footer">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </form>
+        </div>
+    </div>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">📄 Document Tracker</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle"></i> {{ auth()->user()->name }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item text-danger">
-                                        <i class="fas fa-sign-out-alt"></i> Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
+    <div class="main">
+        <div class="topbar">
+            <div>
+                <p class="page-title">Users</p>
+                <p class="breadcrumb-text">Manage all registered users</p>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn-orange" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                    <i class="fas fa-plus me-1"></i> Add User
+                </button>
+                <div class="user-chip dropdown" data-bs-toggle="dropdown">
+                    <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+                    <span class="user-name">{{ auth()->user()->name }}</span>
+                    <i class="fas fa-chevron-down" style="font-size:0.65rem;color:#94a3b8;"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0" style="border-radius:12px;font-size:0.85rem;">
+                    <li><a class="dropdown-item py-2" href="{{ route('admin.profile') }}"><i class="fas fa-user-cog me-2 text-muted"></i>Profile</a></li>
+                    <li><hr class="dropdown-divider my-1"></li>
+                    <li><form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="dropdown-item py-2 text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</button></form></li>
                 </ul>
             </div>
         </div>
-    </nav>
 
-    <div class="container-fluid mt-4">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-2">
-                <div class="sidebar p-3">
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2">
-                            <a href="{{ route('dashboard') }}" class="nav-link">
-                                <i class="fas fa-home"></i> Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="{{ route('admin.users') }}" class="nav-link active">
-                                <i class="fas fa-users"></i> Users
-                            </a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="{{ route('admin.documents') }}" class="nav-link">
-                                <i class="fas fa-file-alt"></i> Documents
-                            </a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="{{ route('admin.profile') }}" class="nav-link">
-                                <i class="fas fa-user"></i> Profile
-                            </a>
-                        </li>
-                    </ul>
+        <div class="content">
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h6><i class="fas fa-users me-2" style="color:#F48200;"></i>Users Management</h6>
+                    <span class="badge bg-secondary">{{ count($users) }} total</span>
                 </div>
-            </div>
-
-            <!-- Content -->
-            <div class="col-md-10">
-                <div class="card p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="fw-bold mb-0"><i class="fas fa-users"></i> Users Management</h5>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                            <i class="fas fa-plus"></i> Add User
-                        </button>
-                    </div>
-
-                    <table class="table table-hover align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Created At</th>
-                                <th>Actions</th>
-                            </tr>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr>
                         </thead>
                         <tbody>
                             @foreach($users as $user)
                             <tr>
-                                <td>{{ $user->id }}</td>
-                                <td>{{ $user->name }}</td>
+                                <td style="color:#94a3b8;font-size:0.8rem;">#{{ $user->id }}</td>
+                                <td class="fw-semibold">{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>
-                                    <span class="badge {{ $user->role === 'admin' ? 'bg-danger' : 'bg-primary' }}">
-                                        {{ ucfirst($user->role) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge {{ $user->status === 'active' ? 'bg-success' : 'bg-secondary' }}">
-                                        {{ ucfirst($user->status) }}
-                                    </span>
-                                </td>
+                                <td><span class="badge {{ $user->role === 'admin' ? 'bg-danger' : 'bg-primary' }}">{{ ucfirst($user->role) }}</span></td>
+                                <td><span class="badge {{ $user->status === 'active' ? 'bg-success' : 'bg-secondary' }}">{{ ucfirst($user->status) }}</span></td>
                                 <td>{{ $user->created_at->format('M d, Y') }}</td>
                                 <td>
-                                    <!-- Edit Button -->
-                                    <button class="btn btn-sm btn-warning edit-btn"
-                                        data-id="{{ $user->id }}"
-                                        data-name="{{ $user->name }}"
-                                        data-email="{{ $user->email }}"
-                                        data-role="{{ $user->role }}"
-                                        data-status="{{ $user->status }}"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#editUserModal">
+                                    <button class="btn btn-sm btn-warning edit-btn" style="border-radius:7px;font-size:0.78rem;"
+                                        data-id="{{ $user->id }}" data-name="{{ $user->name }}"
+                                        data-email="{{ $user->email }}" data-role="{{ $user->role }}" data-status="{{ $user->status }}"
+                                        data-bs-toggle="modal" data-bs-target="#editUserModal">
                                         <i class="fas fa-edit"></i> Edit
                                     </button>
-                                    <!-- Delete Button -->
-                                    <button class="btn btn-sm btn-danger delete-btn"
-                                        data-id="{{ $user->id }}"
-                                        data-name="{{ $user->name }}"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteUserModal">
-                                        <i class="fas fa-trash"></i> Delete
+                                    <button class="btn btn-sm btn-danger delete-btn" style="border-radius:7px;font-size:0.78rem;"
+                                        data-id="{{ $user->id }}" data-name="{{ $user->name }}"
+                                        data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -154,43 +140,22 @@
     <div class="modal fade" id="addUserModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" style="background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%)">
-                    <h5 class="modal-title text-white"><i class="fas fa-user-plus"></i> Add User</h5>
+                <div class="modal-header" style="background:linear-gradient(135deg,#F48200,#F6BB0A);">
+                    <h5 class="modal-title text-white fw-bold"><i class="fas fa-user-plus me-2"></i>Add User</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" action="{{ route('admin.users.store') }}">
                     @csrf
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Full Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="Enter full name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Email</label>
-                            <input type="email" name="email" class="form-control" placeholder="Enter email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="Enter password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Role</label>
-                            <select name="role" class="form-select">
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Status</label>
-                            <select name="status" class="form-select">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                        </div>
+                        <div class="mb-3"><label class="form-label">Full Name</label><input type="text" name="name" class="form-control" placeholder="Enter full name" required></div>
+                        <div class="mb-3"><label class="form-label">Email</label><input type="email" name="email" class="form-control" placeholder="Enter email" required></div>
+                        <div class="mb-3"><label class="form-label">Password</label><input type="password" name="password" class="form-control" placeholder="Enter password" required></div>
+                        <div class="mb-3"><label class="form-label">Role</label><select name="role" class="form-select"><option value="user">User</option><option value="admin">Admin</option></select></div>
+                        <div class="mb-1"><label class="form-label">Status</label><select name="status" class="form-select"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save User</button>
+                        <button type="submit" class="btn btn-orange"><i class="fas fa-save me-1"></i>Save User</button>
                     </div>
                 </form>
             </div>
@@ -201,70 +166,47 @@
     <div class="modal fade" id="editUserModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" style="background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%)">
-                    <h5 class="modal-title text-white"><i class="fas fa-edit"></i> Edit User</h5>
+                <div class="modal-header" style="background:linear-gradient(135deg,#F48200,#F6BB0A);">
+                    <h5 class="modal-title text-white fw-bold"><i class="fas fa-edit me-2"></i>Edit User</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" id="editUserForm">
-                    @csrf
-                    @method('PUT')
+                    @csrf @method('PUT')
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">ID</label>
-                            <input type="text" id="edit_id" class="form-control" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Full Name</label>
-                            <input type="text" name="name" id="edit_name" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Email</label>
-                            <input type="email" name="email" id="edit_email" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Role</label>
-                            <select name="role" id="edit_role" class="form-select">
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Status</label>
-                            <select name="status" id="edit_status" class="form-select">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                        </div>
+                        <div class="mb-3"><label class="form-label">ID</label><input type="text" id="edit_id" class="form-control" disabled></div>
+                        <div class="mb-3"><label class="form-label">Full Name</label><input type="text" name="name" id="edit_name" class="form-control" required></div>
+                        <div class="mb-3"><label class="form-label">Email</label><input type="email" name="email" id="edit_email" class="form-control" required></div>
+                        <div class="mb-3"><label class="form-label">Role</label><select name="role" id="edit_role" class="form-select"><option value="user">User</option><option value="admin">Admin</option></select></div>
+                        <div class="mb-1"><label class="form-label">Status</label><select name="status" id="edit_status" class="form-select"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-warning"><i class="fas fa-save"></i> Update User</button>
+                        <button type="submit" class="btn btn-warning fw-bold"><i class="fas fa-save me-1"></i>Update</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
+    <!-- Delete User Modal -->
     <div class="modal fade" id="deleteUserModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger">
-                    <h5 class="modal-title text-white"><i class="fas fa-trash"></i> Delete User</h5>
+                    <h5 class="modal-title text-white fw-bold"><i class="fas fa-trash me-2"></i>Delete User</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body text-center">
+                <div class="modal-body text-center py-4">
                     <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-                    <p class="fs-5">Are you sure you want to delete</p>
-                    <p class="fw-bold fs-4" id="delete_name"></p>
-                    <p class="text-muted">This action cannot be undone!</p>
+                    <p class="mb-1">Are you sure you want to delete</p>
+                    <p class="fw-bold fs-5 mb-1" id="delete_name"></p>
+                    <p class="text-muted small">This action cannot be undone.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <form method="POST" id="deleteUserForm">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Yes, Delete</button>
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn btn-danger fw-bold"><i class="fas fa-trash me-1"></i>Yes, Delete</button>
                     </form>
                 </div>
             </div>
@@ -274,9 +216,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
     <script>
-        // Edit Modal - populate fields
         document.querySelectorAll('.edit-btn').forEach(button => {
             button.addEventListener('click', function() {
                 document.getElementById('edit_id').value = this.dataset.id;
@@ -287,8 +227,6 @@
                 document.getElementById('editUserForm').action = '/admin/users/' + this.dataset.id;
             });
         });
-
-        // Delete Modal - populate name and form action
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
                 document.getElementById('delete_name').textContent = this.dataset.name;
@@ -296,31 +234,11 @@
             });
         });
     </script>
-
     @if(session('toast_success'))
-    <script>
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "3000"
-        }
-        toastr.success("{{ session('toast_success') }}");
-    </script>
+    <script>toastr.options={closeButton:true,progressBar:true,positionClass:"toast-top-right",timeOut:"3000"};toastr.success("{{ session('toast_success') }}");</script>
     @endif
-
     @if(session('toast_error'))
-    <script>
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "3000"
-        }
-        toastr.error("{{ session('toast_error') }}");
-    </script>
+    <script>toastr.options={closeButton:true,progressBar:true,positionClass:"toast-top-right",timeOut:"3000"};toastr.error("{{ session('toast_error') }}");</script>
     @endif
-
 </body>
-
 </html>
