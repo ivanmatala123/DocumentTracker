@@ -16,6 +16,7 @@ class Document extends Model
         'type',
         'status',
         'due_date',
+        'file_path',
     ];
 
     protected $casts = [

@@ -62,10 +62,21 @@
         .table-card { background: #fff; border-radius: 14px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); overflow: hidden; }
         .table-card-header { padding: 18px 22px; border-bottom: 1px solid #f1f5f9; }
         .table-card-header h6 { font-weight: 700; color: #1e293b; margin: 0; font-size: 0.95rem; }
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 99; }
+        .overlay.show { display: block; }
+        .burger-btn { display: none; background: none; border: none; cursor: pointer; padding: 7px 9px; border-radius: 8px; color: #1e293b; line-height: 1; }
+        .burger-btn:hover { background: #f1f5f9; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-240px); transition: transform 0.28s cubic-bezier(.4,0,.2,1); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; }
+            .burger-btn { display: inline-flex; }
+        }
     </style>
 </head>
 <body>
-    <div class="sidebar">
+    <div class="overlay" id="overlay"></div>
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <div class="icon">📄</div>
             <span>DocTracker</span>
@@ -76,6 +87,8 @@
             <a href="{{ route('admin.users') }}" class="nav-link"><i class="fas fa-users"></i> Users</a>
             <a href="{{ route('admin.documents') }}" class="nav-link"><i class="fas fa-file-alt"></i> Documents</a>
             <a href="{{ route('admin.profile') }}" class="nav-link"><i class="fas fa-user-cog"></i> Profile</a>
+            <div class="nav-label">Switch</div>
+            <a href="{{ route('user.dashboard') }}" class="nav-link"><i class="fas fa-user"></i> User View</a>
         </nav>
         <div class="sidebar-footer">
             <form method="POST" action="{{ route('logout') }}">
@@ -87,6 +100,7 @@
 
     <div class="main">
         <div class="topbar">
+            <button class="burger-btn" id="burgerBtn"><i class="fas fa-bars" style="font-size:1.15rem;"></i></button>
             <div>
                 <p class="page-title">Admin Dashboard</p>
                 <p class="breadcrumb-text">Overview & Analytics</p>
@@ -185,5 +199,12 @@
     @if(session('toast_error'))
     <script>toastr.options={closeButton:true,progressBar:true,positionClass:"toast-top-right",timeOut:"3000"};toastr.error("{{ session('toast_error') }}");</script>
     @endif
+    <script>
+        const burger = document.getElementById('burgerBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        burger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('show'); });
+        overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+    </script>
 </body>
 </html>

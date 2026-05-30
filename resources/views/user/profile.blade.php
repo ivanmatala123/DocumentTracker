@@ -55,10 +55,21 @@
         .btn-save:hover { background: #d97200; }
         .btn-back { background: #f1f5f9; color: #64748b; border: none; border-radius: 10px; padding: 10px 20px; font-weight: 600; font-size: 0.88rem; cursor: pointer; text-decoration: none; }
         .btn-back:hover { background: #e2e8f0; color: #475569; }
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 99; }
+        .overlay.show { display: block; }
+        .burger-btn { display: none; background: none; border: none; cursor: pointer; padding: 7px 9px; border-radius: 8px; color: #1e293b; line-height: 1; }
+        .burger-btn:hover { background: #f1f5f9; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-240px); transition: transform 0.28s cubic-bezier(.4,0,.2,1); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; }
+            .burger-btn { display: inline-flex; }
+        }
     </style>
 </head>
 <body>
-    <div class="sidebar">
+    <div class="overlay" id="overlay"></div>
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <div class="icon">📄</div>
             <span>DocTracker</span>
@@ -78,6 +89,7 @@
 
     <div class="main">
         <div class="topbar">
+            <button class="burger-btn" id="burgerBtn"><i class="fas fa-bars" style="font-size:1.15rem;"></i></button>
             <div>
                 <p class="page-title">My Profile</p>
                 <p class="breadcrumb-text">Account settings & information</p>
@@ -233,5 +245,12 @@
     @if(session('toast_error'))
     <script>toastr.options={closeButton:true,progressBar:true,positionClass:"toast-top-right",timeOut:"3000"};toastr.error("{{ session('toast_error') }}");</script>
     @endif
+    <script>
+        const burger = document.getElementById('burgerBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        burger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('show'); });
+        overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+    </script>
 </body>
 </html>

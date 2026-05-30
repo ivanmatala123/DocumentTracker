@@ -21,7 +21,16 @@ class DocumentController extends Controller
             'description' => 'nullable|string',
             'type'        => 'required|in:PDF,Word,Excel,Image,Other',
             'due_date'    => 'nullable|date',
+            'file'        => 'nullable|file|max:10240',
         ]);
+
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $file->move(public_path('uploads/documents'), $filename);
+            $filePath = $filename;
+        }
 
         Document::create([
             'user_id'     => Auth::id(),
@@ -30,6 +39,7 @@ class DocumentController extends Controller
             'type'        => $request->type,
             'status'      => 'pending',
             'due_date'    => $request->due_date,
+            'file_path'   => $filePath,
         ]);
 
         return redirect()->route('user.dashboard')
@@ -43,9 +53,27 @@ class DocumentController extends Controller
             'description' => 'nullable|string',
             'type'        => 'required|in:PDF,Word,Excel,Image,Other',
             'due_date'    => 'nullable|date',
+            'file'        => 'nullable|file|max:10240',
         ]);
 
-        $document->update($request->only('title', 'description', 'type', 'due_date'));
+        $filePath = $document->file_path;
+        if ($request->hasFile('file')) {
+            if ($filePath && file_exists(public_path('uploads/documents/' . $filePath))) {
+                unlink(public_path('uploads/documents/' . $filePath));
+            }
+            $file = $request->file('file');
+            $filename = time() . '_' . preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $file->move(public_path('uploads/documents'), $filename);
+            $filePath = $filename;
+        }
+
+        $document->update([
+            'title'       => $request->title,
+            'description' => $request->description,
+            'type'        => $request->type,
+            'due_date'    => $request->due_date,
+            'file_path'   => $filePath,
+        ]);
 
         return redirect()->route('user.dashboard')
             ->with('toast_success', 'Document updated successfully!');
@@ -53,6 +81,9 @@ class DocumentController extends Controller
 
     public function destroy(Document $document)
     {
+        if ($document->file_path && file_exists(public_path('uploads/documents/' . $document->file_path))) {
+            unlink(public_path('uploads/documents/' . $document->file_path));
+        }
         $document->delete();
         return redirect()->route('user.dashboard')
             ->with('toast_success', 'Document deleted successfully!');

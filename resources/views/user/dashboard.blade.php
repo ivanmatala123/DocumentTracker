@@ -88,24 +88,37 @@
         .form-control:focus, .form-select:focus { border-color: #F48200; box-shadow: 0 0 0 3px rgba(244,130,0,0.1); }
         .btn-orange { background: #F48200; color: #fff; border: none; border-radius: 8px; padding: 9px 18px; font-weight: 600; font-size: 0.87rem; }
         .btn-orange:hover { background: #d97200; color: #fff; }
+
+        /* Responsive */
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 99; }
+        .overlay.show { display: block; }
+        .burger-btn { display: none; background: none; border: none; cursor: pointer; padding: 7px 9px; border-radius: 8px; color: #1e293b; line-height: 1; }
+        .burger-btn:hover { background: #f1f5f9; }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-240px); transition: transform 0.28s cubic-bezier(.4,0,.2,1); }
+            .sidebar.open { transform: translateX(0); }
+            .main { margin-left: 0; }
+            .burger-btn { display: inline-flex; }
+        }
     </style>
 </head>
 <body>
 
+    <div class="overlay" id="overlay"></div>
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <div class="icon">📄</div>
             <span>DocTracker</span>
         </div>
         <nav class="sidebar-nav">
             <div class="nav-label">Menu</div>
-            <a href="{{ route('user.dashboard') }}" class="nav-link active">
-                <i class="fas fa-home"></i> Dashboard
-            </a>
-            <a href="{{ route('profile') }}" class="nav-link">
-                <i class="fas fa-user"></i> My Profile
-            </a>
+            <a href="{{ route('user.dashboard') }}" class="nav-link active"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="{{ route('profile') }}" class="nav-link"><i class="fas fa-user"></i> My Profile</a>
+            @if(auth()->user()->role === 'admin')
+            <div class="nav-label">Admin</div>
+            <a href="{{ route('dashboard') }}" class="nav-link"><i class="fas fa-shield-alt"></i> Admin Panel</a>
+            @endif
         </nav>
         <div class="sidebar-footer">
             <form method="POST" action="{{ route('logout') }}">
@@ -118,6 +131,7 @@
     <!-- Main Content -->
     <div class="main">
         <div class="topbar">
+            <button class="burger-btn" id="burgerBtn"><i class="fas fa-bars" style="font-size:1.15rem;"></i></button>
             <div class="topbar-left">
                 <p class="page-title">Dashboard</p>
                 <p class="breadcrumb-text">My Documents</p>
@@ -195,7 +209,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th><th>Title</th><th>Type</th><th>Description</th>
-                                <th>Status</th><th>Due Date</th><th>Submitted</th><th>Actions</th>
+                                <th>File</th><th>Status</th><th>Due Date</th><th>Submitted</th><th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -210,7 +224,16 @@
                                     @endphp
                                     <i class="fas {{ $ti[0] }} {{ $ti[1] }} me-1"></i>{{ $doc->type }}
                                 </td>
-                                <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $doc->description ?? '—' }}</td>
+                                <td style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $doc->description ?? '—' }}</td>
+                                <td>
+                                    @if($doc->file_path)
+                                        <a href="{{ asset('uploads/documents/' . $doc->file_path) }}" target="_blank" class="btn btn-sm btn-outline-secondary" style="border-radius:7px;font-size:0.75rem;">
+                                            <i class="fas fa-download"></i> Download
+                                        </a>
+                                    @else
+                                        <span class="text-muted small">—</span>
+                                    @endif
+                                </td>
                                 <td>
                                     @php $sc = ['pending'=>'badge-pending','in-review'=>'badge-review','approved'=>'badge-approved','rejected'=>'badge-rejected']; @endphp
                                     <span class="badge-status {{ $sc[$doc->status] ?? 'badge-pending' }}">{{ ucfirst($doc->status) }}</span>
@@ -222,6 +245,7 @@
                                         data-id="{{ $doc->id }}" data-title="{{ $doc->title }}"
                                         data-description="{{ $doc->description }}" data-type="{{ $doc->type }}"
                                         data-due="{{ $doc->due_date ? $doc->due_date->format('Y-m-d') : '' }}"
+                                        data-file="{{ $doc->file_path ?? '' }}"
                                         data-bs-toggle="modal" data-bs-target="#editDocumentModal">
                                         <i class="fas fa-edit"></i>
                                     </button>
@@ -234,7 +258,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="8">
+                                <td colspan="9">
                                     <div class="empty-state">
                                         <i class="fas fa-folder-open"></i>
                                         <p>No documents yet. Click <strong>Add Document</strong> to get started.</p>
@@ -257,7 +281,7 @@
                     <h5 class="modal-title text-white fw-bold"><i class="fas fa-plus me-2"></i>Add Document</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <form method="POST" action="{{ route('documents.store') }}">
+                <form method="POST" action="{{ route('documents.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3"><label class="form-label">Document Title</label><input type="text" name="title" class="form-control" placeholder="Enter document title" required></div>
@@ -268,8 +292,12 @@
                                 <option value="Other" selected>Other</option>
                             </select>
                         </div>
-                        <div class="mb-3"><label class="form-label">Description <span class="text-muted fw-normal">(optional)</span></label><textarea name="description" class="form-control" rows="3" placeholder="Add notes or description"></textarea></div>
-                        <div class="mb-1"><label class="form-label">Due Date <span class="text-muted fw-normal">(optional)</span></label><input type="date" name="due_date" class="form-control"></div>
+                        <div class="mb-3"><label class="form-label">Description <span class="text-muted fw-normal">(optional)</span></label><textarea name="description" class="form-control" rows="2" placeholder="Add notes or description"></textarea></div>
+                        <div class="mb-3"><label class="form-label">Due Date <span class="text-muted fw-normal">(optional)</span></label><input type="date" name="due_date" class="form-control"></div>
+                        <div class="mb-1">
+                            <label class="form-label">Attach File <span class="text-muted fw-normal">(optional, max 10MB)</span></label>
+                            <input type="file" name="file" class="form-control" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.zip,.rar">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -288,7 +316,7 @@
                     <h5 class="modal-title text-white fw-bold"><i class="fas fa-edit me-2"></i>Edit Document</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <form method="POST" id="editDocumentForm">
+                <form method="POST" id="editDocumentForm" enctype="multipart/form-data">
                     @csrf @method('PUT')
                     <div class="modal-body">
                         <div class="mb-3"><label class="form-label">Document Title</label><input type="text" name="title" id="edit_title" class="form-control" required></div>
@@ -298,8 +326,13 @@
                                 <option value="Excel">Excel</option><option value="Image">Image</option><option value="Other">Other</option>
                             </select>
                         </div>
-                        <div class="mb-3"><label class="form-label">Description</label><textarea name="description" id="edit_description" class="form-control" rows="3"></textarea></div>
-                        <div class="mb-1"><label class="form-label">Due Date</label><input type="date" name="due_date" id="edit_due" class="form-control"></div>
+                        <div class="mb-3"><label class="form-label">Description</label><textarea name="description" id="edit_description" class="form-control" rows="2"></textarea></div>
+                        <div class="mb-3"><label class="form-label">Due Date</label><input type="date" name="due_date" id="edit_due" class="form-control"></div>
+                        <div class="mb-1">
+                            <label class="form-label">Replace File <span class="text-muted fw-normal">(optional)</span></label>
+                            <p id="edit_current_file" class="small text-muted mb-1"></p>
+                            <input type="file" name="file" class="form-control" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.zip,.rar">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -346,6 +379,8 @@
                 document.getElementById('edit_type').value = this.dataset.type;
                 document.getElementById('edit_due').value = this.dataset.due;
                 document.getElementById('editDocumentForm').action = '/documents/' + this.dataset.id;
+                const fileEl = document.getElementById('edit_current_file');
+                fileEl.textContent = this.dataset.file ? 'Current file: ' + this.dataset.file : 'No file attached';
             });
         });
         document.querySelectorAll('.delete-btn').forEach(btn => {
@@ -361,5 +396,12 @@
     @if(session('toast_error'))
     <script>toastr.options={closeButton:true,progressBar:true,positionClass:"toast-top-right",timeOut:"3000"};toastr.error("{{ session('toast_error') }}");</script>
     @endif
+    <script>
+        const burger = document.getElementById('burgerBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        burger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('show'); });
+        overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+    </script>
 </body>
 </html>
