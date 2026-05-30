@@ -24,7 +24,6 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        // Set active on login
         User::where('id', $user->id)->update(['status' => 'active']);
 
         session()->flash('toast_success', 'Welcome back, ' . $user->name . '!');
@@ -40,7 +39,6 @@ class AuthenticatedSessionController extends Controller
     {
         $user = Auth::user();
 
-        // Set inactive on logout
         if ($user) {
             User::where('id', $user->id)->update(['status' => 'inactive']);
         }

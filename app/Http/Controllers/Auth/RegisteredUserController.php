@@ -15,44 +15,31 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): View
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws ValidationException
-     */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user',
-            'status' => 'active', 
+            'role'     => 'user',
+            'status'   => 'active',
         ]);
 
         event(new Registered($user));
-
         Auth::login($user);
 
-        session()->flash('toast_success', 'Registration successful! Welcome ' . $user->name . '!');
-
-        if ($user->role === 'admin') {
-            return redirect()->route('dashboard');
-        }
+        session()->flash('toast_success', 'Welcome ' . $user->name . '!');
 
         return redirect()->route('user.dashboard');
     }
