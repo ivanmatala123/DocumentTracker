@@ -6,13 +6,17 @@
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .card { border: none; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .card-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px 15px 0 0 !important; padding: 20px; }
-        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 10px; padding: 10px; }
-        .form-control { border-radius: 10px; padding: 10px 15px; }
-        .form-control:focus { box-shadow: 0 0 0 3px rgba(102,126,234,0.25); border-color: #667eea; }
+        * { font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #F48200 0%, #F9D342 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .card { border: none; border-radius: 20px; box-shadow: 0 15px 40px rgba(244,130,0,0.35); }
+        .card-header { background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%); border-radius: 20px 20px 0 0 !important; padding: 25px; }
+        .btn-primary { background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%); border: none; border-radius: 10px; padding: 10px; color: #fff; font-weight: 600; }
+        .btn-primary:hover { background: linear-gradient(135deg, #d97200 0%, #d9a500 100%); color: #fff; }
+        .form-control { border-radius: 10px; padding: 10px 15px; border: 2px solid #f0e8d0; }
+        .form-control:focus { box-shadow: 0 0 0 3px rgba(244,130,0,0.2); border-color: #F48200; }
+        a { color: #F48200; }
     </style>
 </head>
 

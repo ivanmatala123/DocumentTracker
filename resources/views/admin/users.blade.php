@@ -8,14 +8,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f4f6fb; margin: 0; padding: 0; }
-        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; padding: 12px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
-        .navbar-brand, .nav-link { color: white !important; }
-        .sidebar { background: white; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); min-height: 85vh; position: sticky; top: 20px; }
+        * { font-family: 'Poppins', sans-serif; }
+        body { background-color: #fffbf0; margin: 0; padding: 0; }
+        .navbar { background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%) !important; padding: 12px 20px; box-shadow: 0 2px 15px rgba(244,130,0,0.35); }
+        .navbar-brand, .navbar .nav-link { color: #fff !important; font-weight: 600; }
+        .sidebar { background: white; border-radius: 20px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); min-height: 85vh; position: sticky; top: 20px; border-top: 4px solid #F48200; }
         .sidebar .nav-link { color: #555 !important; border-radius: 10px; padding: 10px 15px; margin-bottom: 5px; font-weight: 500; }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white !important; }
-        .card { border: none !important; border-radius: 15px !important; box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%); color: white !important; }
+        .card { border: none !important; border-radius: 20px !important; box-shadow: 0 2px 15px rgba(0,0,0,0.08) !important; }
+        .btn-primary { background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%); border: none; font-weight: 600; }
+        .btn-primary:hover { background: linear-gradient(135deg, #d97200 0%, #d9a500 100%); }
     </style>
 </head>
 
@@ -150,7 +154,7 @@
     <div class="modal fade" id="addUserModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <div class="modal-header" style="background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%)">
                     <h5 class="modal-title text-white"><i class="fas fa-user-plus"></i> Add User</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
@@ -197,7 +201,7 @@
     <div class="modal fade" id="editUserModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+                <div class="modal-header" style="background: linear-gradient(135deg, #F48200 0%, #F6BB0A 100%)">
                     <h5 class="modal-title text-white"><i class="fas fa-edit"></i> Edit User</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
