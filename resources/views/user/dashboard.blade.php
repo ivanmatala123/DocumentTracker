@@ -7,7 +7,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6fb; margin: 0; padding: 0; }
+        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; padding: 12px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+        .navbar-brand, .nav-link { color: white !important; }
+        .welcome-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white; box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+        .stat-card { border: none !important; border-radius: 15px !important; box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important; transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        .card { border: none !important; border-radius: 15px !important; box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important; }
+    </style>
 </head>
 <body>
 

@@ -7,7 +7,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6fb; margin: 0; padding: 0; }
+        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; padding: 12px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+        .navbar-brand, .nav-link { color: white !important; }
+        .sidebar { background: white; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); min-height: 85vh; position: sticky; top: 20px; }
+        .sidebar .nav-link { color: #555 !important; border-radius: 10px; padding: 10px 15px; margin-bottom: 5px; font-weight: 500; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white !important; }
+        .card { border: none !important; border-radius: 15px !important; box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important; }
+    </style>
     <style>
         .profile-avatar {
             width: 120px;
