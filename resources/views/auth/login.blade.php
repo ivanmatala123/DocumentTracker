@@ -11,6 +11,8 @@
     <style>
         * { font-family: 'Poppins', sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
         body { min-height: 100vh; display: flex; }
+
+        /* ── Left panel ── */
         .left-panel {
             width: 45%;
             min-height: 100vh;
@@ -19,7 +21,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 3rem;
+            padding: 3rem 3.5rem;
             position: relative;
             overflow: hidden;
         }
@@ -39,7 +41,7 @@
             border-radius: 50%;
             bottom: -80px; left: -80px;
         }
-        .left-inner { position: relative; z-index: 2; text-align: center; }
+        .left-inner { position: relative; z-index: 2; text-align: center; width: 100%; }
         .brand-icon {
             width: 72px; height: 72px;
             background: linear-gradient(135deg, #F48200, #F6BB0A);
@@ -49,20 +51,44 @@
             justify-content: center;
             font-size: 2rem;
             margin-bottom: 1.5rem;
+            box-shadow: 0 8px 24px rgba(244,130,0,0.3);
         }
-        .left-inner h1 { color: #fff; font-weight: 800; font-size: 1.9rem; margin-bottom: 0.75rem; }
-        .left-inner p { color: rgba(255,255,255,0.55); font-size: 0.92rem; line-height: 1.8; max-width: 300px; }
-        .feature-pills { display: flex; gap: 10px; justify-content: center; margin-top: 2.5rem; flex-wrap: wrap; }
+        .left-inner h1 {
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.9rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.3px;
+        }
+        .left-inner p {
+            color: rgba(255,255,255,0.55);
+            font-size: 0.92rem;
+            line-height: 1.8;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .feature-pills {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
         .pill {
             background: rgba(255,255,255,0.07);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 50px;
-            padding: 7px 18px;
+            padding: 7px 16px;
             color: rgba(255,255,255,0.7);
             font-size: 0.78rem;
             font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .pill i { color: #F48200; margin-right: 5px; }
+        .pill i { color: #F48200; }
+
+        /* ── Right panel ── */
         .right-panel {
             width: 55%;
             min-height: 100vh;
@@ -71,38 +97,128 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 3rem;
+            padding: 3rem 3.5rem;
         }
         .form-wrap { width: 100%; max-width: 400px; }
-        .form-wrap h2 { font-weight: 700; color: #1e293b; font-size: 1.7rem; margin-bottom: 0.3rem; }
-        .form-wrap .sub { color: #94a3b8; font-size: 0.88rem; margin-bottom: 2rem; }
-        .field-label { font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 6px; display: block; }
+
+        /* Heading block */
+        .form-wrap h2 {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 1.75rem;
+            margin-bottom: 0.35rem;
+            letter-spacing: -0.3px;
+        }
+        .form-wrap .sub {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        /* Form fields */
+        .field-group { margin-bottom: 1.1rem; }
+        .field-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+            display: block;
+            letter-spacing: 0.2px;
+        }
         .input-wrap { position: relative; }
-        .input-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #cbd5e1; font-size: 0.85rem; }
+        .input-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #cbd5e1;
+            font-size: 0.82rem;
+            pointer-events: none;
+        }
         .input-wrap input {
             width: 100%;
-            padding: 11px 14px 11px 38px;
+            padding: 11px 14px 11px 40px;
             border: 1.5px solid #e2e8f0;
             border-radius: 10px;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: #1e293b;
+            background: #f8fafc;
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
-        .input-wrap input:focus { border-color: #F48200; box-shadow: 0 0 0 3px rgba(244,130,0,0.1); }
-        .input-wrap input.is-invalid { border-color: #ef4444; }
-        .invalid-feedback { color: #ef4444; font-size: 0.78rem; margin-top: 4px; }
-        .btn-sign { width: 100%; background: #F48200; color: #fff; border: none; border-radius: 10px; padding: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
-        .btn-sign:hover { background: #d97200; }
-        .divider { text-align: center; color: #cbd5e1; font-size: 0.8rem; margin: 1.5rem 0; position: relative; }
-        .divider::before, .divider::after { content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: #e2e8f0; }
+        .input-wrap input::placeholder { color: #b0bec5; }
+        .input-wrap input:focus {
+            border-color: #F48200;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(244,130,0,0.1);
+        }
+        .input-wrap input.is-invalid { border-color: #ef4444; background: #fff5f5; }
+        .invalid-feedback { color: #ef4444; font-size: 0.76rem; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
+
+        /* Remember me */
+        .remember-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1.4rem;
+        }
+        .remember-row input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+            accent-color: #F48200;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .remember-row label {
+            font-size: 0.83rem;
+            color: #64748b;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        /* Submit button */
+        .btn-sign {
+            width: 100%;
+            background: linear-gradient(135deg, #F48200, #F6A623);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            letter-spacing: 0.2px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        .btn-sign:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-sign:active { transform: translateY(0); }
+
+        /* Divider + bottom link */
+        .divider {
+            text-align: center;
+            color: #cbd5e1;
+            font-size: 0.78rem;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 44%;
+            height: 1px;
+            background: #e2e8f0;
+        }
         .divider::before { left: 0; }
         .divider::after { right: 0; }
-        .register-link { text-align: center; font-size: 0.87rem; color: #64748b; }
+        .register-link { text-align: center; font-size: 0.85rem; color: #64748b; }
         .register-link a { color: #F48200; font-weight: 600; text-decoration: none; }
+        .register-link a:hover { text-decoration: underline; }
+
         @media (max-width: 768px) {
             .left-panel { display: none; }
-            .right-panel { width: 100%; }
+            .right-panel { width: 100%; padding: 2rem; }
         }
     </style>
 </head>
@@ -127,29 +243,29 @@
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-                <div class="mb-3">
+                <div class="field-group">
                     <label class="field-label">Email Address</label>
                     <div class="input-wrap">
                         <i class="fas fa-envelope"></i>
                         <input type="email" name="email" class="@error('email') is-invalid @enderror"
                             value="{{ old('email') }}" placeholder="you@example.com" required>
                     </div>
-                    @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    @error('email')<div class="invalid-feedback"><i class="fas fa-circle-exclamation"></i>{{ $message }}</div>@enderror
                 </div>
 
-                <div class="mb-3">
+                <div class="field-group">
                     <label class="field-label">Password</label>
                     <div class="input-wrap">
                         <i class="fas fa-lock"></i>
                         <input type="password" name="password" class="@error('password') is-invalid @enderror"
                             placeholder="Enter your password" required>
                     </div>
-                    @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    @error('password')<div class="invalid-feedback"><i class="fas fa-circle-exclamation"></i>{{ $message }}</div>@enderror
                 </div>
 
-                <div class="mb-4 d-flex align-items-center">
-                    <input type="checkbox" name="remember" id="remember" style="accent-color:#F48200;width:15px;height:15px;">
-                    <label for="remember" style="margin-left:8px;font-size:0.84rem;color:#64748b;">Remember me</label>
+                <div class="remember-row">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Remember me</label>
                 </div>
 
                 <button type="submit" class="btn-sign">Sign In</button>
