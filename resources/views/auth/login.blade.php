@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +10,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { font-family: 'Poppins', sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
-        body { min-height: 100vh; display: flex; }
+        * {
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+        }
 
         /* ── Left panel ── */
         .left-panel {
@@ -25,25 +35,39 @@
             position: relative;
             overflow: hidden;
         }
+
         .left-panel::before {
             content: '';
             position: absolute;
-            width: 350px; height: 350px;
-            background: rgba(244,130,0,0.12);
+            width: 350px;
+            height: 350px;
+            background: rgba(244, 130, 0, 0.12);
             border-radius: 50%;
-            top: -100px; right: -100px;
+            top: -100px;
+            right: -100px;
         }
+
         .left-panel::after {
             content: '';
             position: absolute;
-            width: 250px; height: 250px;
-            background: rgba(246,187,10,0.08);
+            width: 250px;
+            height: 250px;
+            background: rgba(246, 187, 10, 0.08);
             border-radius: 50%;
-            bottom: -80px; left: -80px;
+            bottom: -80px;
+            left: -80px;
         }
-        .left-inner { position: relative; z-index: 2; text-align: center; width: 100%; }
+
+        .left-inner {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+        }
+
         .brand-icon {
-            width: 72px; height: 72px;
+            width: 72px;
+            height: 72px;
             background: linear-gradient(135deg, #F48200, #F6BB0A);
             border-radius: 18px;
             display: inline-flex;
@@ -51,8 +75,9 @@
             justify-content: center;
             font-size: 2rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 8px 24px rgba(244,130,0,0.3);
+            box-shadow: 0 8px 24px rgba(244, 130, 0, 0.3);
         }
+
         .left-inner h1 {
             color: #fff;
             font-weight: 800;
@@ -60,13 +85,15 @@
             margin-bottom: 0.75rem;
             letter-spacing: -0.3px;
         }
+
         .left-inner p {
-            color: rgba(255,255,255,0.55);
+            color: rgba(255, 255, 255, 0.55);
             font-size: 0.92rem;
             line-height: 1.8;
             max-width: 300px;
             margin: 0 auto;
         }
+
         .feature-pills {
             display: flex;
             gap: 10px;
@@ -74,19 +101,23 @@
             margin-top: 2.5rem;
             flex-wrap: wrap;
         }
+
         .pill {
-            background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 50px;
             padding: 7px 16px;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.78rem;
             font-weight: 500;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
-        .pill i { color: #F48200; }
+
+        .pill i {
+            color: #F48200;
+        }
 
         /* ── Right panel ── */
         .right-panel {
@@ -99,7 +130,11 @@
             align-items: center;
             padding: 3rem 3.5rem;
         }
-        .form-wrap { width: 100%; max-width: 400px; }
+
+        .form-wrap {
+            width: 100%;
+            max-width: 400px;
+        }
 
         /* Heading block */
         .form-wrap h2 {
@@ -109,6 +144,7 @@
             margin-bottom: 0.35rem;
             letter-spacing: -0.3px;
         }
+
         .form-wrap .sub {
             color: #94a3b8;
             font-size: 0.875rem;
@@ -117,7 +153,10 @@
         }
 
         /* Form fields */
-        .field-group { margin-bottom: 1.1rem; }
+        .field-group {
+            margin-bottom: 1.1rem;
+        }
+
         .field-label {
             font-size: 0.8rem;
             font-weight: 600;
@@ -126,7 +165,11 @@
             display: block;
             letter-spacing: 0.2px;
         }
-        .input-wrap { position: relative; }
+
+        .input-wrap {
+            position: relative;
+        }
+
         .input-wrap i {
             position: absolute;
             left: 14px;
@@ -136,6 +179,7 @@
             font-size: 0.82rem;
             pointer-events: none;
         }
+
         .input-wrap input {
             width: 100%;
             padding: 11px 14px 11px 40px;
@@ -147,14 +191,30 @@
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
-        .input-wrap input::placeholder { color: #b0bec5; }
+
+        .input-wrap input::placeholder {
+            color: #b0bec5;
+        }
+
         .input-wrap input:focus {
             border-color: #F48200;
             background: #fff;
-            box-shadow: 0 0 0 3px rgba(244,130,0,0.1);
+            box-shadow: 0 0 0 3px rgba(244, 130, 0, 0.1);
         }
-        .input-wrap input.is-invalid { border-color: #ef4444; background: #fff5f5; }
-        .invalid-feedback { color: #ef4444; font-size: 0.76rem; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
+
+        .input-wrap input.is-invalid {
+            border-color: #ef4444;
+            background: #fff5f5;
+        }
+
+        .invalid-feedback {
+            color: #ef4444;
+            font-size: 0.76rem;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
         /* Remember me */
         .remember-row {
@@ -163,6 +223,7 @@
             gap: 8px;
             margin-bottom: 1.4rem;
         }
+
         .remember-row input[type="checkbox"] {
             width: 15px;
             height: 15px;
@@ -170,6 +231,7 @@
             cursor: pointer;
             flex-shrink: 0;
         }
+
         .remember-row label {
             font-size: 0.83rem;
             color: #64748b;
@@ -191,8 +253,15 @@
             cursor: pointer;
             transition: opacity 0.2s, transform 0.15s;
         }
-        .btn-sign:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-sign:active { transform: translateY(0); }
+
+        .btn-sign:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-sign:active {
+            transform: translateY(0);
+        }
 
         /* Divider + bottom link */
         .divider {
@@ -202,7 +271,9 @@
             margin: 1.5rem 0;
             position: relative;
         }
-        .divider::before, .divider::after {
+
+        .divider::before,
+        .divider::after {
             content: '';
             position: absolute;
             top: 50%;
@@ -210,18 +281,44 @@
             height: 1px;
             background: #e2e8f0;
         }
-        .divider::before { left: 0; }
-        .divider::after { right: 0; }
-        .register-link { text-align: center; font-size: 0.85rem; color: #64748b; }
-        .register-link a { color: #F48200; font-weight: 600; text-decoration: none; }
-        .register-link a:hover { text-decoration: underline; }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .register-link {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .register-link a {
+            color: #F48200;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
 
         @media (max-width: 768px) {
-            .left-panel { display: none; }
-            .right-panel { width: 100%; padding: 2rem; }
+            .left-panel {
+                display: none;
+            }
+
+            .right-panel {
+                width: 100%;
+                padding: 2rem;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="left-panel">
         <div class="left-inner">
@@ -275,8 +372,34 @@
             <p class="register-link">Don't have an account? <a href="{{ route('register') }}">Create one here</a></p>
         </div>
     </div>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+@if(session('toast_success'))
+<script>
+    toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        timeOut: "3000"
+    };
+
+    toastr.success("{{ session('toast_success') }}");
+</script>
+@endif
+
+@if(session('toast_error'))
+<script>
+    toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        timeOut: "3000"
+    };
+
+    toastr.error("{{ session('toast_error') }}");
+</script>
+@endif
 </body>
+
 </html>

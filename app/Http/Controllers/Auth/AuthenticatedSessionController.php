@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return redirect()->route('user.dashboard');
+        return redirect()->route('user.dashboard')->with('toast_success', 'Welcome back, ' . $user->name . '!');
     }
 
     public function destroy(Request $request): RedirectResponse
@@ -47,6 +47,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('login')->with('toast_success', 'Logged out successfully!');
     }
 }

@@ -37,10 +37,10 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
-        Auth::login($user);
+  
 
         session()->flash('toast_success', 'Welcome ' . $user->name . '!');
 
-        return redirect()->route('user.dashboard');
+        return redirect()->route('login')->with('toast_success', 'Account created successfully. Please login.');;
     }
 }
